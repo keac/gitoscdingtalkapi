@@ -34,7 +34,7 @@
  *
  ***/
 
-$pwd = "Northme"; //Set password
+$pwd = "password"; //Set password
 $access_token = "xxx"; // Set Api token
 
 /* End of Setting */
@@ -76,16 +76,16 @@ function fnPush($data)
         // Add character
         $commit_messages .= <<<EOF
                 NHL \n id： {$commit->id}
-                NHL Time： {$commit->timestamp}
+                NHL Time： {$commit_time}
                 NHL >  {$commit->message}
+                NHL -------
 EOF;
     }
 
     $messages = <<< EOF
             \n ## {$data->repository->name}   Push 提示
             \n 分支：{$data->ref} 
-            NHL 提交者：{$data->user_name}  
-            NHL 提交时间：{$data->user->time} 
+            \n 提交者：[{$data->user_name}]({$data->user->url})
             NHL 共{$data->total_commits_count}个 Commit
             NHL #### Commit 详情
              {$commit_messages}
@@ -93,7 +93,7 @@ EOF;
             NHL 仓库名称：{$data->repository->name}
             NHL > {$data->repository->description}
             NHL \n [仓库地址]( {$data->repository->url} )
-            NHL    [仓库主页]( {$data->repository->homepage} )
+            NHL \n  [仓库主页]( {$data->repository->homepage} )
 EOF;
     return $messages;
 }
@@ -253,9 +253,14 @@ switch ($hook_name) {
  *  By keac
  *
  * */
+$messages .= <<<EOF
+    NHL &nbsp;&nbsp;
+    NHL 工作累了，记得休息哦~
+EOF;
 
-$messages = str_replace(array("\r\n", "\r"), '', $messages);
-$messages = str_replace("NHL", "&nbsp;&nbsp;\n", $messages);
+$messages = str_replace(array("\r\n", "\r"), " ", $messages);
+//$messages = str_replace(array(" "), 'k', $messages);
+$messages = str_replace("NHL", " &nbsp;&nbsp; \n\n", $messages);
 
 
 
